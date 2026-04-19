@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nexus Global | Fortune 500 Commodity Trading</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -46,13 +46,19 @@
 
     <style>
         /* --- CORE OVERRIDES --- */
-        body { background-color: #FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        html, body { 
+            background-color: #FFFFFF; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden; /* Strict horizontal overflow prevention */
+            width: 100%;
+        }
         
         /* Premium Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #F4F5F7; }
-        ::-webkit-scrollbar-thumb { background: #121212; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #121212; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #C8102E; }
+        @media (min-width: 768px) { ::-webkit-scrollbar { width: 8px; } }
 
         /* Text Selection */
         ::selection { background: #C8102E; color: #FFFFFF; }
@@ -61,91 +67,106 @@
         
         /* Glassmorphism Navigation */
         .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
             transition: all 0.4s ease;
         }
-
-        /* Hero Image Masking */
-        .hero-mask {
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        @media (min-width: 1024px) {
+            .glass-nav {
+                background: rgba(255, 255, 255, 0.85);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
         }
+
+        /* Responsive Hero Image Masking */
+        .hero-mask { clip-path: polygon(0 0, 100% 0, 100% 98%, 0 100%); }
+        @media (min-width: 768px) { .hero-mask { clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%); } }
+        @media (min-width: 1024px) { .hero-mask { clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%); } }
 
         /* Photo Card Zoom & Overlay Effects */
         .photo-card {
             overflow: hidden;
             position: relative;
             transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transform: translateZ(0); /* Hardware acceleration */
         }
         .photo-card img {
             transition: transform 0.8s ease;
+            will-change: transform;
         }
-        .photo-card:hover img {
-            transform: scale(1.1);
-        }
+        .photo-card:hover img { transform: scale(1.1); }
         .photo-card .overlay {
             background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.4) 50%, transparent 100%);
             transition: opacity 0.4s ease;
         }
         .photo-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
             border-color: #C8102E;
+        }
+        @media (min-width: 1024px) {
+            .photo-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.15);
+            }
         }
 
         /* Ticker Animation */
-        .ticker-wrapper { overflow: hidden; display: flex; width: 100%; }
-        .ticker-track { display: flex; animation: ticker 45s linear infinite; white-space: nowrap; }
+        .ticker-wrapper { overflow: hidden; display: flex; width: 100%; position: relative; }
+        .ticker-track { display: flex; animation: ticker 30s linear infinite; white-space: nowrap; }
+        @media (min-width: 768px) { .ticker-track { animation: ticker 45s linear infinite; } }
         @keyframes ticker {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
         /* Scroll Reveal System */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal-left { opacity: 0; transform: translateX(-20px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal-right { opacity: 0; transform: translateX(20px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         
-        .reveal-left { opacity: 0; transform: translateX(-50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal-left.active { opacity: 1; transform: translateX(0); }
-        
-        .reveal-right { opacity: 0; transform: translateX(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal-right.active { opacity: 1; transform: translateX(0); }
+        @media (min-width: 1024px) {
+            .reveal { transform: translateY(40px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
+            .reveal-left { transform: translateX(-50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
+            .reveal-right { transform: translateX(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
+        }
+        .reveal.active, .reveal-left.active, .reveal-right.active { opacity: 1; transform: translate(0, 0); }
 
         /* Map Pulsing Nodes */
         .map-node {
-            position: absolute; width: 14px; height: 14px; background: #C8102E; border-radius: 50%;
+            position: absolute; width: 10px; height: 10px; background: #C8102E; border-radius: 50%;
             box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.7);
             animation: pulse-node 2s infinite cubic-bezier(0.66, 0, 0, 1);
             cursor: pointer;
         }
-        @keyframes pulse-node {
-            to { box-shadow: 0 0 0 25px rgba(200, 16, 46, 0); }
-        }
+        @media (min-width: 768px) { .map-node { width: 14px; height: 14px; } }
+        @keyframes pulse-node { to { box-shadow: 0 0 0 25px rgba(200, 16, 46, 0); } }
         
         /* Floating Chat Box */
         .chat-btn { animation: float-chat 3s ease-in-out infinite; }
         @keyframes float-chat {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-8px); }
         }
         
-        /* Custom Checkbox for Form */
-        input[type="checkbox"]:checked { background-color: #C8102E; border-color: #C8102E; }
+        /* Custom Checkbox */
+        input[type="checkbox"] { accent-color: #C8102E; }
     </style>
 </head>
 <body class="text-brand-charcoal">
 
-    <div class="bg-brand-black text-white text-[10px] sm:text-xs tracking-widest uppercase py-2.5 px-4 lg:px-8 border-b border-gray-900 hidden md:flex justify-between items-center z-50 relative">
+    <div class="bg-brand-black text-white text-[10px] tracking-widest uppercase py-2.5 px-4 lg:px-8 border-b border-gray-900 hidden md:flex justify-between items-center z-50 relative">
         <div class="flex items-center space-x-6 text-gray-300">
             <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span> Global Markets Open</span>
-            <span><i class="fa-solid fa-shield-halved text-brand-red mr-1.5"></i> End-to-End Encrypted Protocols</span>
+            <span class="hidden lg:inline"><i class="fa-solid fa-shield-halved text-brand-red mr-1.5"></i> Encrypted Protocols</span>
         </div>
-        <div class="flex items-center space-x-6">
+        <div class="flex items-center space-x-4 lg:space-x-6">
             <a href="#" class="hover:text-brand-red transition"><i class="fa-solid fa-phone mr-1.5"></i> +1 (800) 999-TRADE</a>
             <a href="#" class="hover:text-brand-red transition"><i class="fa-solid fa-envelope mr-1.5"></i> desk@nexusglobal.com</a>
-            <div class="pl-6 border-l border-gray-800">
+            <div class="pl-4 lg:pl-6 border-l border-gray-800">
                 <select class="bg-transparent border-none outline-none text-white cursor-pointer hover:text-brand-red transition uppercase">
                     <option class="text-brand-black">ENG</option>
                     <option class="text-brand-black">FRA</option>
@@ -156,12 +177,12 @@
     </div>
 
     <nav id="mainNav" class="fixed w-full z-50 glass-nav top-0 md:top-[38px] px-4 lg:px-8">
-        <div class="max-w-[1400px] mx-auto flex justify-between items-center h-24">
-            <a href="#" class="text-3xl lg:text-4xl font-heading font-extrabold tracking-widest text-brand-black flex items-center group">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center h-20 md:h-24">
+            <a href="#" class="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold tracking-widest text-brand-black flex items-center group">
                 NEXUS<span class="text-brand-red ml-1 group-hover:animate-pulse">.</span>
             </a>
 
-            <div class="hidden xl:flex space-x-10 items-center">
+            <div class="hidden xl:flex space-x-8 items-center">
                 <a href="#about" class="text-xs font-bold uppercase tracking-[0.15em] text-brand-black hover:text-brand-red transition relative group py-2">
                     Corporate
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-red transition-all group-hover:w-full"></span>
@@ -184,29 +205,29 @@
                 <a href="#contact" class="text-xs font-bold uppercase tracking-[0.15em] text-brand-black hover:text-brand-red transition">
                     Partner Portal
                 </a>
-                <a href="#contact" class="px-8 py-4 bg-brand-red text-white text-xs font-bold uppercase tracking-[0.2em] shadow-red-glow hover:bg-brand-black transition duration-300">
+                <a href="#contact" class="px-6 py-3 bg-brand-red text-white text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] shadow-red-glow hover:bg-brand-black transition duration-300">
                     Get Quote
                 </a>
             </div>
 
-            <button id="mobileMenuBtn" class="xl:hidden text-2xl text-brand-black focus:outline-none">
+            <button id="mobileMenuBtn" class="xl:hidden text-2xl text-brand-black focus:outline-none p-2">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
         </div>
 
-        <div id="mobileMenu" class="hidden xl:hidden bg-white border-t border-brand-border absolute w-full left-0 shadow-2xl">
+        <div id="mobileMenu" class="hidden xl:hidden bg-white border-t border-brand-border absolute w-full left-0 shadow-2xl h-screen overflow-y-auto pb-32">
             <div class="px-6 py-8 flex flex-col space-y-6">
-                <a href="#about" class="text-sm font-bold uppercase tracking-widest border-b border-gray-100 pb-2">Corporate</a>
-                <a href="#commodities" class="text-sm font-bold uppercase tracking-widest border-b border-gray-100 pb-2">Commodities</a>
-                <a href="#network" class="text-sm font-bold uppercase tracking-widest border-b border-gray-100 pb-2">Infrastructure</a>
-                <a href="#certifications" class="text-sm font-bold uppercase tracking-widest border-b border-gray-100 pb-2">Compliance</a>
-                <a href="#contact" class="text-sm font-bold uppercase tracking-widest text-brand-red">Client Portal Login</a>
-                <a href="#contact" class="px-6 py-4 bg-brand-black text-white text-center text-xs font-bold uppercase tracking-widest">Request Quote</a>
+                <a href="#about" class="text-sm font-bold uppercase tracking-widest border-b border-gray-100 pb-3">Corporate</a>
+                <a href="#commodities" class="text-sm font-bold uppercase tracking-widest border-b border-gray-100 pb-3">Commodities</a>
+                <a href="#network" class="text-sm font-bold uppercase tracking-widest border-b border-gray-100 pb-3">Infrastructure</a>
+                <a href="#certifications" class="text-sm font-bold uppercase tracking-widest border-b border-gray-100 pb-3">Compliance</a>
+                <a href="#contact" class="text-sm font-bold uppercase tracking-widest text-brand-red pt-4">Client Portal Login</a>
+                <a href="#contact" class="w-full py-4 bg-brand-black text-white text-center text-xs font-bold uppercase tracking-widest mt-4">Request Quote</a>
             </div>
         </div>
     </nav>
 
-    <header class="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden bg-brand-gray hero-mask">
+    <header class="relative min-h-[90vh] flex items-center pt-28 pb-16 lg:pt-32 lg:pb-20 overflow-hidden bg-brand-gray hero-mask">
         <div class="absolute inset-0 z-0 opacity-40">
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -218,93 +239,91 @@
             </svg>
         </div>
 
-        <div class="max-w-[1400px] mx-auto px-4 lg:px-8 relative z-10 w-full flex flex-col lg:flex-row items-center gap-16">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8 relative z-10 w-full flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
             
-            <div class="w-full lg:w-1/2 reveal-left">
-                <div class="inline-flex items-center bg-white border border-brand-border px-4 py-2 mb-8 shadow-sm">
-                    <i class="fa-solid fa-earth-americas text-brand-red mr-3"></i>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-charcoal">Fortune 500 Global Operations</span>
+            <div class="w-full lg:w-1/2 reveal-left text-center lg:text-left mt-10 lg:mt-0">
+                <div class="inline-flex items-center bg-white border border-brand-border px-3 py-1.5 md:px-4 md:py-2 mb-6 shadow-sm mx-auto lg:mx-0">
+                    <i class="fa-solid fa-earth-americas text-brand-red mr-2 md:mr-3 text-xs md:text-sm"></i>
+                    <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-brand-charcoal">Fortune 500 Global Operations</span>
                 </div>
                 
-                <h1 class="text-5xl md:text-7xl lg:text-[80px] font-heading font-extrabold text-brand-black leading-[1.05] mb-8">
-                    Dominating <br>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-[80px] font-heading font-extrabold text-brand-black leading-[1.1] mb-6 md:mb-8">
+                    Dominating <br class="hidden sm:block">
                     Global <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-[#FF4D4D]">Supply.</span>
                 </h1>
                 
-                <p class="text-lg md:text-xl text-brand-muted font-light leading-relaxed mb-12 max-w-xl border-l-4 border-brand-red pl-6">
+                <p class="text-sm md:text-base lg:text-lg text-brand-muted font-light leading-relaxed mb-8 md:mb-12 max-w-xl mx-auto lg:mx-0 lg:border-l-4 lg:border-brand-red lg:pl-6">
                     Orchestrating the secure, compliant, and rapid international movement of Energy, Metals, and Agri-Commodities for the world's most demanding enterprises.
                 </p>
                 
-                <div class="flex flex-col sm:flex-row gap-5">
-                    <a href="#contact" class="px-10 py-5 bg-brand-red text-white text-xs font-bold uppercase tracking-[0.2em] shadow-red-glow hover:bg-brand-black transition duration-400 text-center flex items-center justify-center group">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 md:px-10 md:py-5 bg-brand-red text-white text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] shadow-red-glow hover:bg-brand-black transition duration-400 text-center flex items-center justify-center group">
                         Initiate Trade <i class="fa-solid fa-arrow-right ml-3 transform group-hover:translate-x-2 transition"></i>
                     </a>
-                    <a href="#about" class="px-10 py-5 bg-white border border-brand-border text-brand-black text-xs font-bold uppercase tracking-[0.2em] hover:border-brand-black transition duration-400 text-center shadow-sm">
+                    <a href="#about" class="w-full sm:w-auto px-8 py-4 md:px-10 md:py-5 bg-white border border-brand-border text-brand-black text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] hover:border-brand-black transition duration-400 text-center shadow-sm">
                         View Credentials
                     </a>
                 </div>
             </div>
 
-            <div class="w-full lg:w-1/2 relative reveal-right">
-                <div class="absolute -top-6 -right-6 w-32 h-32 border-t-4 border-r-4 border-brand-red opacity-30 z-0 hidden md:block"></div>
+            <div class="w-full lg:w-1/2 relative reveal-right mt-8 lg:mt-0">
+                <div class="absolute -top-4 -right-4 md:-top-6 md:-right-6 w-20 h-20 md:w-32 md:h-32 border-t-4 border-r-4 border-brand-red opacity-30 z-0 hidden sm:block"></div>
                 
                 <div class="relative z-10 shadow-premium bg-white p-2">
-                    <img src="Gemini_Generated_Image_adqlu8adqlu8adql.png" alt="Global Trade Port Container Ship" class="w-full h-auto object-cover grayscale hover:grayscale-0 transition duration-1000">
+                    <img src="Gemini_Generated_Image_adqlu8adqlu8adql.png" alt="Global Trade Port Container Ship" class="w-full h-[300px] sm:h-[400px] lg:h-auto object-cover grayscale hover:grayscale-0 transition duration-1000">
                 </div>
                 
-                <div class="absolute -bottom-10 -left-10 bg-brand-black text-white p-8 shadow-2xl z-20 hidden md:flex items-center gap-6 border-l-4 border-brand-red">
-                    <div class="text-brand-red text-4xl"><i class="fa-solid fa-anchor"></i></div>
+                <div class="hidden sm:flex absolute -bottom-6 -left-6 md:-bottom-10 md:-left-10 bg-brand-black text-white p-4 md:p-8 shadow-2xl z-20 items-center gap-4 md:gap-6 border-l-4 border-brand-red">
+                    <div class="text-brand-red text-2xl md:text-4xl"><i class="fa-solid fa-anchor"></i></div>
                     <div>
-                        <p class="text-3xl font-heading font-bold">14.2M</p>
-                        <p class="text-[10px] uppercase tracking-widest text-gray-400 mt-1">Metric Tons Delivered (YTD)</p>
+                        <p class="text-xl md:text-3xl font-heading font-bold">14.2M</p>
+                        <p class="text-[8px] md:text-[10px] uppercase tracking-widest text-gray-400 mt-1">Metric Tons (YTD)</p>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="bg-brand-black py-4 border-y border-gray-900 relative z-20 -mt-10 overflow-hidden shadow-xl">
-        <div class="absolute left-0 top-0 h-full bg-brand-red text-white px-6 md:px-10 flex items-center z-30 shadow-[10px_0_20px_rgba(0,0,0,0.5)]">
-            <span class="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">Live Desk</span>
+    <div class="bg-brand-black py-3 md:py-4 border-y border-gray-900 relative z-20 -mt-6 md:-mt-10 overflow-hidden shadow-xl flex w-full">
+        <div class="bg-brand-red text-white px-4 md:px-10 flex items-center z-30 shadow-[10px_0_20px_rgba(0,0,0,0.5)] shrink-0 absolute left-0 h-full">
+            <span class="text-[8px] md:text-[10px] lg:text-xs font-bold uppercase tracking-[0.2em] whitespace-nowrap">Live Desk</span>
         </div>
-        <div class="ticker-wrapper pl-32 md:pl-48">
-            <div class="ticker-track text-xs font-mono tracking-wider">
-                <span class="text-gray-400 mx-8">BRENT CRUDE: <span class="text-white font-bold">$84.32</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +1.2%</span></span>
+        <div class="ticker-wrapper pl-24 md:pl-48">
+            <div class="ticker-track text-[10px] md:text-xs font-mono tracking-wider">
+                <span class="text-gray-400 mx-4 md:mx-8">BRENT: <span class="text-white font-bold">$84.32</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +1.2%</span></span>
                 <span class="text-gray-700">|</span>
-                <span class="text-gray-400 mx-8">WTI CRUDE: <span class="text-white font-bold">$80.15</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +0.8%</span></span>
+                <span class="text-gray-400 mx-4 md:mx-8">WTI: <span class="text-white font-bold">$80.15</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +0.8%</span></span>
                 <span class="text-gray-700">|</span>
-                <span class="text-gray-400 mx-8">LNG: <span class="text-white font-bold">$2.84</span> <span class="text-brand-red"><i class="fa-solid fa-caret-down"></i> -0.4%</span></span>
+                <span class="text-gray-400 mx-4 md:mx-8">LNG: <span class="text-white font-bold">$2.84</span> <span class="text-brand-red"><i class="fa-solid fa-caret-down"></i> -0.4%</span></span>
                 <span class="text-gray-700">|</span>
-                <span class="text-gray-400 mx-8">LME COPPER: <span class="text-white font-bold">$8,450</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +2.1%</span></span>
+                <span class="text-gray-400 mx-4 md:mx-8">COPPER: <span class="text-white font-bold">$8,450</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +2.1%</span></span>
                 <span class="text-gray-700">|</span>
-                <span class="text-gray-400 mx-8">ALUMINIUM: <span class="text-white font-bold">$2,210</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +0.5%</span></span>
+                <span class="text-gray-400 mx-4 md:mx-8">ALUMINIUM: <span class="text-white font-bold">$2,210</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +0.5%</span></span>
                 <span class="text-gray-700">|</span>
-                <span class="text-gray-400 mx-8">SUGAR #11: <span class="text-white font-bold">$22.40</span> <span class="text-brand-red"><i class="fa-solid fa-caret-down"></i> -1.1%</span></span>
+                <span class="text-gray-400 mx-4 md:mx-8">BRENT: <span class="text-white font-bold">$84.32</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +1.2%</span></span>
                 <span class="text-gray-700">|</span>
-                <span class="text-gray-400 mx-8">BRENT CRUDE: <span class="text-white font-bold">$84.32</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +1.2%</span></span>
+                <span class="text-gray-400 mx-4 md:mx-8">WTI: <span class="text-white font-bold">$80.15</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +0.8%</span></span>
                 <span class="text-gray-700">|</span>
-                <span class="text-gray-400 mx-8">WTI CRUDE: <span class="text-white font-bold">$80.15</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +0.8%</span></span>
+                <span class="text-gray-400 mx-4 md:mx-8">LNG: <span class="text-white font-bold">$2.84</span> <span class="text-brand-red"><i class="fa-solid fa-caret-down"></i> -0.4%</span></span>
                 <span class="text-gray-700">|</span>
-                <span class="text-gray-400 mx-8">LNG: <span class="text-white font-bold">$2.84</span> <span class="text-brand-red"><i class="fa-solid fa-caret-down"></i> -0.4%</span></span>
-                <span class="text-gray-700">|</span>
-                <span class="text-gray-400 mx-8">LME COPPER: <span class="text-white font-bold">$8,450</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +2.1%</span></span>
+                <span class="text-gray-400 mx-4 md:mx-8">COPPER: <span class="text-white font-bold">$8,450</span> <span class="text-green-500"><i class="fa-solid fa-caret-up"></i> +2.1%</span></span>
             </div>
         </div>
     </div>
 
-    <section class="py-12 bg-white border-b border-brand-border">
+    <section class="py-8 md:py-12 bg-white border-b border-brand-border">
         <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            <div class="flex flex-col lg:flex-row justify-between items-center bg-brand-gray border border-brand-border p-6 md:p-8 reveal shadow-sm">
-                <div class="w-full lg:w-1/3 mb-6 lg:mb-0">
-                    <h3 class="text-xl font-heading font-bold text-brand-black mb-2">Freight Satellite Tracking</h3>
-                    <p class="text-xs text-brand-muted font-light leading-relaxed">Enter Bill of Lading (BL) or Container ID to access real-time GPS positioning and customs clearance status.</p>
+            <div class="flex flex-col lg:flex-row justify-between items-center bg-brand-gray border border-brand-border p-5 md:p-8 reveal shadow-sm gap-4">
+                <div class="w-full lg:w-2/5 text-center lg:text-left">
+                    <h3 class="text-lg md:text-xl font-heading font-bold text-brand-black mb-1 md:mb-2">Freight Satellite Tracking</h3>
+                    <p class="text-[10px] md:text-xs text-brand-muted font-light leading-relaxed hidden sm:block">Enter Bill of Lading (BL) or Container ID for real-time GPS & customs status.</p>
                 </div>
-                <div class="w-full lg:w-3/5 flex flex-col sm:flex-row gap-4">
+                <div class="w-full lg:w-3/5 flex flex-col sm:flex-row gap-3">
                     <div class="relative w-full">
                         <i class="fa-solid fa-barcode absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" placeholder="e.g., NEXUS-9938-BL" class="w-full pl-12 pr-4 py-4 bg-white border border-gray-300 text-sm font-mono focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red transition">
+                        <input type="text" placeholder="e.g., NEXUS-9938-BL" class="w-full pl-10 pr-4 py-3 md:py-4 bg-white border border-gray-300 text-xs md:text-sm font-mono focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red transition">
                     </div>
-                    <button class="bg-brand-black text-white px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-brand-red transition duration-300 whitespace-nowrap">
+                    <button class="w-full sm:w-auto bg-brand-black text-white px-6 md:px-8 py-3 md:py-4 text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-brand-red transition duration-300 whitespace-nowrap">
                         Track Shipment
                     </button>
                 </div>
@@ -312,546 +331,269 @@
         </div>
     </section>
 
-    <section id="network" class="py-32 bg-white relative overflow-hidden">
+    <section id="network" class="py-16 md:py-24 lg:py-32 bg-white relative overflow-hidden">
         <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            <div class="text-center mb-20 reveal">
-                <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Infrastructure & Reach</h2>
-                <h3 class="text-4xl md:text-5xl font-heading font-bold text-brand-black">Worldwide Market Coverage</h3>
-                <div class="w-16 h-1 bg-brand-red mx-auto mt-8"></div>
+            <div class="text-center mb-12 md:mb-20 reveal">
+                <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-2 md:mb-4">Infrastructure & Reach</h2>
+                <h3 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-brand-black">Worldwide Market Coverage</h3>
+                <div class="w-12 md:w-16 h-1 bg-brand-red mx-auto mt-4 md:mt-8"></div>
             </div>
 
-            <div class="relative w-full max-w-6xl mx-auto bg-brand-gray border border-brand-border p-4 md:p-10 shadow-inner-light reveal">
+            <div class="relative w-full max-w-6xl mx-auto bg-brand-gray border border-brand-border p-2 md:p-6 lg:p-10 shadow-inner-light reveal overflow-hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1008 650" class="w-full h-auto opacity-10" fill="#000000">
-                    <path d="M255.4 135.5c-3.2-1.9-4.8-1.7-6.2 1-.7 1.3-1.6 3-2 3.6-2.1 3-2.1 3-3.6 2-3-2-2.8-2.6 1.4-4.8 2.3-1.2 4.1-3 4-4.1-.1-1-1.7-2.7-3.6-3.8-1.9-1.1-4-2-4.6-2-3 0 1-5 4.8-6.1 1.7-.5 2.1-1.1 2.1-3.2 0-2.1.2-2.7 1.2-3.1 3.2-1.4 6 5.8 4 9.9-.9 1.8.8 6.4 2.5 8.3 1.1 1.2 2 3.2 2 4.4 0 1.9-1.2 1.9-2 .1zm-32.9 6c-.3-1-2.2-2-4.2-2-2.6 0-3.2.6-2.1 2.1 1 1.5 5 1.5 6.3 0zm43.3-6.6c-1.3-1.8.2-5 3.3-7.2 3.1-2.2 3.6-2 1.6 1-1.6 2.3-3.4 6-4 8.2-.8 2.9-1 2.8-.9-2zm-33.3-1.4c-.4-1.2-1.3-2.3-2.1-2.5-.7-.2-.2-1.5 1.2-2.9 3.2-3 7.8-.5 6.2 3.4-.6 1.6-1.5 1.7-5.3 2zm81 21.6c-.6-1.4-1.6-2-2.1-1.4-.6.6-.7 2.1-.2 3.5.5 1.4 1.5 2 2.1 1.4.6-.6.7-2.1.2-3.5zm-59.5-39.7c0-.9-.7-1.4-1.5-1.1-.9.4-1.5 1.4-1.5 2.2 0 .9.7 1.4 1.5 1.1.9-.3 1.5-1.3 1.5-2.2zM216.5 112c-.5-1.3-1.7-2.3-2.6-2.3-.9 0-1.4 1.1-.9 2.5.4 1.3 1.7 2.3 2.6 2.3.9 0 1.4-1.1.9-2.5zm43.6 81.3c-.6-.6-.1-1.1 1-1.1 1.2 0 2.6-.9 3.2-2 1.5-3 8.3-5.2 8.3-2.7 0 1-.7 1.2-3.2 1.2-2 0-3.3.6-3.3 1.5 0 .9.7 1.5 2 1.5 1.1 0 2 .5 2 1 0 1.1-7.7 2.8-8.8 1.9-1-1 1.7 1.7-1.2-1.3zm144.3 33c-3-1.8-3.7-2-2.1-.7 1.1.9 2.1 2.5 2.1 3.5 0 1.4.3 1.3 2.5-.6 1.5-1.3 2.5-3 2.2-3.6-.3-.7-2.4-.7-4.7 1.4zM454.2 178c-.6-1.1-1.6-2-2.2-2-.6 0-1.2 1.1-1.2 2.5 0 1.4.6 2.5 1.2 2.5.6 0 1.6-.9 2.2-2s1.4-2.8-.2-.7l-.5-1.2-2.2-1.6-1.1.8-1.5-.6zm10.7-33.3c-2.3-1.4-3.5-3.3-2.5-4 1.1-.8 4.2 0 6.6 1.7 2.3 1.7 3.5 3.5 2.5 4.3-1.1.8-4.3-.3-6.6-2z"/>
                     <rect x="0" y="0" width="1008" height="650" fill="none"/>
                     <path d="M 150 150 Q 200 100 250 150 T 350 200 T 250 300 T 150 250 Z" fill="#E2E8F0"/>
                     <path d="M 450 150 Q 550 100 650 150 T 750 300 T 550 400 T 400 250 Z" fill="#E2E8F0"/>
                     <path d="M 750 200 Q 850 150 950 250 T 850 450 T 700 350 Z" fill="#E2E8F0"/>
-                    <path d="M 250 350 Q 300 350 350 450 T 200 550 Z" fill="#E2E8F0"/>
-                    <path d="M 500 400 Q 600 400 650 500 T 550 600 Z" fill="#E2E8F0"/>
                 </svg>
 
                 <div class="map-node" style="top: 30%; left: 22%;">
-                    <div class="absolute bottom-full mb-3 left-1/2 transform -translate-x-1/2 bg-brand-black text-white p-3 w-48 shadow-xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30">
-                        <p class="text-xs font-bold uppercase tracking-wider text-brand-red mb-1">Americas Hub</p>
-                        <p class="text-[10px] text-gray-300">Houston, TX / New York, NY</p>
-                        <p class="text-[10px] text-gray-300 mt-1 border-t border-gray-700 pt-1">Crude Oil, LNG, Agri</p>
+                    <div class="absolute bottom-full mb-2 lg:mb-3 left-1/2 transform -translate-x-1/2 bg-brand-black text-white p-2 lg:p-3 w-32 md:w-48 shadow-xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30">
+                        <p class="text-[8px] md:text-xs font-bold uppercase tracking-wider text-brand-red mb-1">Americas Hub</p>
+                        <p class="text-[8px] md:text-[10px] text-gray-300">Houston / New York</p>
+                        <p class="text-[8px] md:text-[10px] text-gray-300 mt-1 border-t border-gray-700 pt-1">Crude Oil, LNG</p>
                     </div>
                 </div>
                 <div class="map-node" style="top: 25%; left: 52%;">
-                    <div class="absolute bottom-full mb-3 left-1/2 transform -translate-x-1/2 bg-brand-black text-white p-3 w-48 shadow-xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30">
-                        <p class="text-xs font-bold uppercase tracking-wider text-brand-red mb-1">European Hub</p>
-                        <p class="text-[10px] text-gray-300">London, UK / Rotterdam, NL</p>
-                        <p class="text-[10px] text-gray-300 mt-1 border-t border-gray-700 pt-1">Metals, Diesel, Finance</p>
+                    <div class="absolute bottom-full mb-2 lg:mb-3 left-1/2 transform -translate-x-1/2 bg-brand-black text-white p-2 lg:p-3 w-32 md:w-48 shadow-xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30">
+                        <p class="text-[8px] md:text-xs font-bold uppercase tracking-wider text-brand-red mb-1">European Hub</p>
+                        <p class="text-[8px] md:text-[10px] text-gray-300">London / Rotterdam</p>
+                        <p class="text-[8px] md:text-[10px] text-gray-300 mt-1 border-t border-gray-700 pt-1">Metals, Diesel</p>
                     </div>
                 </div>
                 <div class="map-node" style="top: 45%; left: 62%;">
-                    <div class="absolute bottom-full mb-3 left-1/2 transform -translate-x-1/2 bg-brand-black text-white p-3 w-48 shadow-xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30">
-                        <p class="text-xs font-bold uppercase tracking-wider text-brand-red mb-1">MENA Operations</p>
-                        <p class="text-[10px] text-gray-300">Dubai, UAE / Doha, QA</p>
-                        <p class="text-[10px] text-gray-300 mt-1 border-t border-gray-700 pt-1">Petrochemicals, Polymers</p>
-                    </div>
-                </div>
-                <div class="map-node" style="top: 55%; left: 75%;">
-                    <div class="absolute bottom-full mb-3 left-1/2 transform -translate-x-1/2 bg-brand-black text-white p-3 w-48 shadow-xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30">
-                        <p class="text-xs font-bold uppercase tracking-wider text-brand-red mb-1">APAC Hub</p>
-                        <p class="text-[10px] text-gray-300">Singapore / Mumbai, IN</p>
-                        <p class="text-[10px] text-gray-300 mt-1 border-t border-gray-700 pt-1">Coal, Bulk Agri, Minerals</p>
+                    <div class="absolute bottom-full mb-2 lg:mb-3 left-1/2 transform -translate-x-1/2 bg-brand-black text-white p-2 lg:p-3 w-32 md:w-48 shadow-xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30">
+                        <p class="text-[8px] md:text-xs font-bold uppercase tracking-wider text-brand-red mb-1">MENA Operations</p>
+                        <p class="text-[8px] md:text-[10px] text-gray-300">Dubai / Doha</p>
+                        <p class="text-[8px] md:text-[10px] text-gray-300 mt-1 border-t border-gray-700 pt-1">Polymers</p>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 border-t border-brand-border pt-12 reveal">
-                <div class="text-center p-6 border-r border-brand-border border-b md:border-b-0">
-                    <p class="text-5xl font-heading font-bold text-brand-black mb-2">65<span class="text-brand-red">+</span></p>
-                    <p class="text-[10px] uppercase tracking-widest text-brand-muted font-bold">Countries Serviced</p>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mt-12 md:mt-20 border-t border-brand-border pt-8 md:pt-12 reveal">
+                <div class="text-center p-4 md:p-6 border-r border-brand-border border-b lg:border-b-0">
+                    <p class="text-3xl md:text-5xl font-heading font-bold text-brand-black mb-1 md:mb-2">65<span class="text-brand-red">+</span></p>
+                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest text-brand-muted font-bold">Countries Serviced</p>
                 </div>
-                <div class="text-center p-6 border-b md:border-b-0 md:border-r border-brand-border">
-                    <p class="text-5xl font-heading font-bold text-brand-black mb-2">12</p>
-                    <p class="text-[10px] uppercase tracking-widest text-brand-muted font-bold">Strategic Trade Hubs</p>
+                <div class="text-center p-4 md:p-6 border-b lg:border-b-0 lg:border-r border-brand-border">
+                    <p class="text-3xl md:text-5xl font-heading font-bold text-brand-black mb-1 md:mb-2">12</p>
+                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest text-brand-muted font-bold">Strategic Hubs</p>
                 </div>
-                <div class="text-center p-6 border-r border-brand-border">
-                    <p class="text-5xl font-heading font-bold text-brand-black mb-2">250<span class="text-brand-red">+</span></p>
-                    <p class="text-[10px] uppercase tracking-widest text-brand-muted font-bold">Chartered Vessels</p>
+                <div class="text-center p-4 md:p-6 border-r border-brand-border">
+                    <p class="text-3xl md:text-5xl font-heading font-bold text-brand-black mb-1 md:mb-2">250<span class="text-brand-red">+</span></p>
+                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest text-brand-muted font-bold">Chartered Vessels</p>
                 </div>
-                <div class="text-center p-6">
-                    <p class="text-5xl font-heading font-bold text-brand-black mb-2">$8<span class="text-brand-red">B</span></p>
-                    <p class="text-[10px] uppercase tracking-widest text-brand-muted font-bold">Annual Volume</p>
+                <div class="text-center p-4 md:p-6">
+                    <p class="text-3xl md:text-5xl font-heading font-bold text-brand-black mb-1 md:mb-2">$8<span class="text-brand-red">B</span></p>
+                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest text-brand-muted font-bold">Annual Volume</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="commodities" class="py-32 bg-brand-gray border-y border-brand-border">
+    <section id="commodities" class="py-16 md:py-24 lg:py-32 bg-brand-gray border-y border-brand-border">
         <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 md:mb-20 reveal text-center md:text-left gap-4">
                 <div>
-                    <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Core Asset Classes</h2>
-                    <h3 class="text-4xl md:text-5xl font-heading font-bold text-brand-black">Global Commodities</h3>
+                    <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-2 md:mb-4">Core Asset Classes</h2>
+                    <h3 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-brand-black">Global Commodities</h3>
                 </div>
-                <a href="#contact" class="hidden md:flex items-center text-[10px] font-bold uppercase tracking-widest text-brand-black border-b-2 border-brand-black hover:text-brand-red hover:border-brand-red transition pb-1">
-                    Request Comprehensive Catalog <i class="fa-solid fa-arrow-down ml-2"></i>
+                <a href="#contact" class="inline-flex items-center text-[10px] font-bold uppercase tracking-widest text-brand-black border-b-2 border-brand-black hover:text-brand-red hover:border-brand-red transition pb-1">
+                    Request Catalog <i class="fa-solid fa-arrow-down ml-2"></i>
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                <div class="photo-card bg-brand-black text-white h-64 md:h-80 rounded-none border border-transparent reveal">
                     <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Crude Oil Rig" class="absolute inset-0 w-full h-full object-cover opacity-60">
                     <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-droplet"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Crude Oil</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">Brent & WTI standards sourced directly from top-tier sovereign reserves.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
+                    <div class="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10">
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-brand-red flex items-center justify-center mb-3 md:mb-4"><i class="fa-solid fa-droplet text-sm md:text-base"></i></div>
+                        <h4 class="text-xl md:text-2xl font-heading font-bold mb-1 md:mb-2">Crude Oil</h4>
+                        <p class="text-[10px] md:text-xs text-gray-300 font-light leading-relaxed mb-3 md:mb-4 hidden sm:block">Brent & WTI standards sourced directly from top-tier sovereign reserves.</p>
+                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition w-max">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
                     </div>
                 </div>
 
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://media.istockphoto.com/id/183293386/photo/a-hand-sifting-through-a-pile-of-clear-plastic-resin-pellets.webp?a=1&b=1&s=612x612&w=0&k=20&c=k_VtwsR9QWTRM_X51ONRIM2N9TV2A_0FeHouYxDjBMk=" alt="Diesel Tanks" class="absolute inset-0 w-full h-full object-cover opacity-60">
+                <div class="photo-card bg-brand-black text-white h-64 md:h-80 rounded-none border border-transparent reveal">
+                    <img src="https://images.unsplash.com/photo-1678984239787-96f69f24ac22?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGRpZXNlbHxlbnwwfHwwfHx8MA%3D%3D" alt="Diesel Tanks" class="absolute inset-0 w-full h-full object-cover opacity-60">
                     <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-gas-pump"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Diesel (ULSD)</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">Ultra-Low Sulfur Diesel conforming to strict Euro VI emissions standards.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
+                    <div class="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10">
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-brand-red flex items-center justify-center mb-3 md:mb-4"><i class="fa-solid fa-gas-pump text-sm md:text-base"></i></div>
+                        <h4 class="text-xl md:text-2xl font-heading font-bold mb-1 md:mb-2">Diesel (ULSD)</h4>
+                        <p class="text-[10px] md:text-xs text-gray-300 font-light leading-relaxed mb-3 md:mb-4 hidden sm:block">Ultra-Low Sulfur Diesel conforming to strict Euro VI emissions standards.</p>
+                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition w-max">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
                     </div>
                 </div>
 
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://images.unsplash.com/photo-1542296332-2e4473faf563?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Jet Engine" class="absolute inset-0 w-full h-full object-cover opacity-60">
+                <div class="photo-card bg-brand-black text-white h-64 md:h-80 rounded-none border border-transparent reveal">
+                    <img src="https://plus.unsplash.com/premium_photo-1661962719862-4b8f0aee3a15?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bG5nfGVufDB8fDB8fHww" alt="LNG Terminal" class="absolute inset-0 w-full h-full object-cover opacity-60">
                     <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-plane"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Jet Fuel A-1</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">Aviation turbine fuel engineered for maximum commercial flight efficiency.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
+                    <div class="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10">
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-brand-red flex items-center justify-center mb-3 md:mb-4"><i class="fa-solid fa-fire text-sm md:text-base"></i></div>
+                        <h4 class="text-xl md:text-2xl font-heading font-bold mb-1 md:mb-2">LNG</h4>
+                        <p class="text-[10px] md:text-xs text-gray-300 font-light leading-relaxed mb-3 md:mb-4 hidden sm:block">Liquefied Natural Gas transported via specialized cryogenic Q-Flex fleets.</p>
+                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition w-max">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
                     </div>
                 </div>
 
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1500&q=80" alt="LNG Terminal" class="absolute inset-0 w-full h-full object-cover opacity-60">
+                <div class="photo-card bg-brand-black text-white h-64 md:h-80 rounded-none border border-transparent reveal">
+                    <img src="https://images.unsplash.com/photo-1609387433510-d2ca76dd0259?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNvcHBlcnxlbnwwfHwwfHx8MA%3D%3D" alt="Copper Wires" class="absolute inset-0 w-full h-full object-cover opacity-60">
                     <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-fire"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">LNG</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">Liquefied Natural Gas transported via specialized cryogenic Q-Flex fleets.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
+                    <div class="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10">
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-brand-red flex items-center justify-center mb-3 md:mb-4"><i class="fa-solid fa-ring text-sm md:text-base"></i></div>
+                        <h4 class="text-xl md:text-2xl font-heading font-bold mb-1 md:mb-2">Copper</h4>
+                        <p class="text-[10px] md:text-xs text-gray-300 font-light leading-relaxed mb-3 md:mb-4 hidden sm:block">High-purity Grade A copper cathodes fueling international electrification.</p>
+                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition w-max">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
                     </div>
                 </div>
-
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://plus.unsplash.com/premium_photo-1661962719862-4b8f0aee3a15?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bHBnfGVufDB8fDB8fHww" alt="LPG Cylinders" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                    <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-fire-burner"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">LPG</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">High-grade Liquefied Petroleum Gas for industrial and commercial usage.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
-                    </div>
-                </div>
-
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://images.unsplash.com/photo-1584916201218-f4242ceb4809?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Polymer Plastics" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                    <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-flask"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Polymers</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">HDPE, LDPE, and PVC resins serving extensive global manufacturing chains.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
-                    </div>
-                </div>
-
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Chemical Lab" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                    <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-vial"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Methanol</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">Industrial-grade methanol serving as a foundational chemical building block.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
-                    </div>
-                </div>
-
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Rice Fields" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                    <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-wheat-awn"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Rice</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">Premium long-grain and basmati varieties ensuring global food security.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
-                    </div>
-                </div>
-
-                <!-- <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://images.unsplash.com/photo-1581428982868-e410dd127a90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sugar Refined" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                    <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-cubes"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Sugar</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">Refined ICUMSA 45 and raw brown sugar sourced from verified global mills.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
-                    </div>
-                </div>
-
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Copper Wires" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                    <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-ring"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Copper</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">High-purity Grade A copper cathodes fueling international electrification.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
-                    </div>
-                </div>
-
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://images.unsplash.com/photo-1518544801976-3e159e50e58c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Aluminium Rolls" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                    <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-layer-group"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Aluminium</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">Primary aluminium ingots essential for aerospace and automotive sectors.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
-                    </div>
-                </div>
-
-                <div class="photo-card bg-brand-black text-white h-80 rounded-none border border-transparent reveal">
-                    <img src="https://images.unsplash.com/photo-1587578016785-bc1dae290827?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Coal Mining" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                    <div class="overlay absolute inset-0"></div>
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                        <div class="w-10 h-10 bg-brand-red flex items-center justify-center mb-4"><i class="fa-solid fa-gem"></i></div>
-                        <h4 class="text-2xl font-heading font-bold mb-2">Coal</h4>
-                        <p class="text-xs text-gray-300 font-light leading-relaxed mb-4">Thermal and metallurgical coal supporting heavy industry requirements.</p>
-                        <a href="#contact" class="text-[10px] uppercase tracking-widest font-bold text-brand-red hover:text-white transition">Specs <i class="fa-solid fa-angle-right ml-1"></i></a>
-                    </div>
-                </div> -->
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-xs text-brand-muted">Showing 4 of 12 core assets. <a href="#contact" class="text-brand-red hover:underline font-bold">Contact our desk</a> for full agricultural, petrochemical, and precious metal inventory.</p>
             </div>
         </div>
     </section>
 
-    <section id="certifications" class="py-24 bg-white">
+    <section id="certifications" class="py-16 md:py-24 lg:py-32 bg-white">
         <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Uncompromising Standards</h2>
-                <h3 class="text-4xl font-heading font-bold text-brand-black">Global Compliance & Certifications</h3>
-                <div class="w-16 h-1 bg-brand-red mx-auto mt-6"></div>
+            <div class="text-center mb-12 md:mb-16 reveal">
+                <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-2 md:mb-4">Uncompromising Standards</h2>
+                <h3 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-brand-black">Global Compliance</h3>
+                <div class="w-12 md:w-16 h-1 bg-brand-red mx-auto mt-4 md:mt-6"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                 <div class="border border-brand-border bg-brand-gray group hover:border-brand-red transition duration-500 reveal">
-                    <div class="h-48 overflow-hidden relative">
+                    <div class="h-32 md:h-48 overflow-hidden relative">
                         <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="ISO Audit Document" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-700">
-                        <div class="absolute top-4 right-4 bg-brand-red text-white p-2 shadow-sm"><i class="fa-solid fa-award text-xl"></i></div>
+                        <div class="absolute top-4 right-4 bg-brand-red text-white p-2 shadow-sm"><i class="fa-solid fa-award"></i></div>
                     </div>
-                    <div class="p-6 bg-white">
-                        <h4 class="font-bold text-brand-black mb-2 uppercase tracking-wider text-sm">ISO 9001:2015</h4>
-                        <p class="text-xs text-brand-muted font-light leading-relaxed">Certified for exceptional Quality Management Systems across all global operations.</p>
+                    <div class="p-5 md:p-6 bg-white">
+                        <h4 class="font-bold text-brand-black mb-1 md:mb-2 uppercase tracking-wider text-xs md:text-sm">ISO 9001:2015</h4>
+                        <p class="text-[10px] md:text-xs text-brand-muted font-light leading-relaxed">Quality Management Systems across global operations.</p>
                     </div>
                 </div>
 
                 <div class="border border-brand-border bg-brand-gray group hover:border-brand-red transition duration-500 reveal">
-                    <div class="h-48 overflow-hidden relative">
+                    <div class="h-32 md:h-48 overflow-hidden relative">
                         <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="IEC Standards" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-700">
-                        <div class="absolute top-4 right-4 bg-brand-red text-white p-2 shadow-sm"><i class="fa-solid fa-globe text-xl"></i></div>
+                        <div class="absolute top-4 right-4 bg-brand-red text-white p-2 shadow-sm"><i class="fa-solid fa-globe"></i></div>
                     </div>
-                    <div class="p-6 bg-white">
-                        <h4 class="font-bold text-brand-black mb-2 uppercase tracking-wider text-sm">IEC Certified</h4>
-                        <p class="text-xs text-brand-muted font-light leading-relaxed">Adhering strictly to International Electrotechnical Commission trade benchmarks.</p>
-                    </div>
-                </div>
-
-                <div class="border border-brand-border bg-brand-gray group hover:border-brand-red transition duration-500 reveal">
-                    <div class="h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1626863905121-3b0c0ed7b94c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tax and Finance" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-700">
-                        <div class="absolute top-4 right-4 bg-brand-red text-white p-2 shadow-sm"><i class="fa-solid fa-file-invoice-dollar text-xl"></i></div>
-                    </div>
-                    <div class="p-6 bg-white">
-                        <h4 class="font-bold text-brand-black mb-2 uppercase tracking-wider text-sm">Global GST / VAT</h4>
-                        <p class="text-xs text-brand-muted font-light leading-relaxed">Fully registered and compliant with cross-border taxation and tariff frameworks.</p>
-                    </div>
-                </div>
-
-                <div class="border border-brand-border bg-brand-gray group hover:border-brand-red transition duration-500 reveal">
-                    <div class="h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Corporate Seal Contract" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-700">
-                        <div class="absolute top-4 right-4 bg-brand-red text-white p-2 shadow-sm"><i class="fa-solid fa-stamp text-xl"></i></div>
-                    </div>
-                    <div class="p-6 bg-white">
-                        <h4 class="font-bold text-brand-black mb-2 uppercase tracking-wider text-sm">A-Class Trade License</h4>
-                        <p class="text-xs text-brand-muted font-light leading-relaxed">Government-issued unrestricted import/export clearance for high-volume trade.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="py-24 bg-brand-gray border-t border-brand-border relative overflow-hidden">
-        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            <div class="flex flex-col lg:flex-row items-center gap-16">
-                <div class="w-full lg:w-5/12 relative reveal-left">
-                    <div class="border-l-4 border-t-4 border-brand-red pt-4 pl-4">
-                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Executive Leadership" class="w-full h-[600px] object-cover grayscale hover:grayscale-0 transition duration-1000 shadow-xl">
-                    </div>
-                    <div class="absolute bottom-10 -right-6 bg-white p-6 shadow-premium border border-brand-border hidden md:block">
-                        <i class="fa-solid fa-quote-left text-4xl text-brand-red opacity-20 absolute top-2 right-4"></i>
-                        <h4 class="font-heading font-bold text-2xl text-brand-black">30+ Years</h4>
-                        <p class="text-[10px] uppercase tracking-widest text-brand-muted font-bold mt-1">Enterprise Trading Excellence</p>
+                    <div class="p-5 md:p-6 bg-white">
+                        <h4 class="font-bold text-brand-black mb-1 md:mb-2 uppercase tracking-wider text-xs md:text-sm">IEC Certified</h4>
+                        <p class="text-[10px] md:text-xs text-brand-muted font-light leading-relaxed">Adhering to International Electrotechnical trade benchmarks.</p>
                     </div>
                 </div>
                 
-                <div class="w-full lg:w-7/12 reveal-right bg-white p-8 md:p-16 border border-brand-border shadow-sm relative">
-                    <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Leadership Perspective</h2>
-                    <h3 class="text-4xl font-heading font-bold text-brand-black mb-8 leading-tight">Architecting the Backbone of Global Industry.</h3>
+                <div class="border border-brand-border bg-brand-gray group hover:border-brand-red transition duration-500 reveal hidden sm:block">
+                    <div class="h-32 md:h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Corporate Seal Contract" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-700">
+                        <div class="absolute top-4 right-4 bg-brand-red text-white p-2 shadow-sm"><i class="fa-solid fa-stamp"></i></div>
+                    </div>
+                    <div class="p-5 md:p-6 bg-white">
+                        <h4 class="font-bold text-brand-black mb-1 md:mb-2 uppercase tracking-wider text-xs md:text-sm">A-Class License</h4>
+                        <p class="text-[10px] md:text-xs text-brand-muted font-light leading-relaxed">Unrestricted import/export clearance for high-volume trade.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 md:py-24 bg-brand-gray border-t border-brand-border relative overflow-hidden">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+                <div class="w-full lg:w-5/12 relative reveal-left">
+                    <div class="border-l-4 border-t-4 border-brand-red pt-3 pl-3 md:pt-4 md:pl-4">
+                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Executive Leadership" class="w-full h-[400px] md:h-[600px] object-cover grayscale hover:grayscale-0 transition duration-1000 shadow-xl">
+                    </div>
+                    <div class="absolute bottom-6 -right-2 md:bottom-10 md:-right-6 bg-white p-4 md:p-6 shadow-premium border border-brand-border">
+                        <h4 class="font-heading font-bold text-lg md:text-2xl text-brand-black">30+ Years</h4>
+                        <p class="text-[8px] md:text-[10px] uppercase tracking-widest text-brand-muted font-bold mt-1">Trading Excellence</p>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-7/12 reveal-right bg-white p-6 md:p-10 lg:p-16 border border-brand-border shadow-sm mt-8 lg:mt-0">
+                    <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-3 md:mb-4">Leadership Perspective</h2>
+                    <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-black mb-6 md:mb-8 leading-tight">Architecting the Backbone of Global Industry.</h3>
                     
-                    <div class="space-y-6 text-sm text-brand-charcoal font-light leading-relaxed mb-10">
+                    <div class="space-y-4 md:space-y-6 text-xs md:text-sm text-brand-charcoal font-light leading-relaxed mb-8 md:mb-10">
                         <p>
                             "In an era characterized by geopolitical complexity and market volatility, international trade demands more than mere logistics—it requires absolute, unbreakable certainty. At Nexus Global, we do not merely move commodities; we engineer institutional trust."
                         </p>
                         <p>
-                            "Our mandate is uncompromising: to provide Fortune 500 partners, sovereign entities, and massive industrial conglomerates with a flawless supply chain. Through strict ESG compliance, rigorous risk hedging, and immense financial liquidity, we ensure that the world's most vital resources arrive securely, efficiently, and precisely when required."
+                            "Our mandate is uncompromising: to provide Fortune 500 partners, sovereign entities, and massive industrial conglomerates with a flawless supply chain."
                         </p>
                     </div>
                     
-                    <div class="border-t border-brand-border pt-8 flex items-center justify-between">
+                    <div class="border-t border-brand-border pt-6 md:pt-8 flex items-center justify-between">
                         <div>
-                            <h4 class="font-heading font-bold text-xl text-brand-black">Nathaniel Sterling</h4>
-                            <p class="text-[10px] uppercase tracking-widest text-brand-red font-bold mt-1">Chairman & CEO</p>
+                            <h4 class="font-heading font-bold text-lg md:text-xl text-brand-black">Nathaniel Sterling</h4>
+                            <p class="text-[8px] md:text-[10px] uppercase tracking-widest text-brand-red font-bold mt-1">Chairman & CEO</p>
                         </div>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Signature_of_John_Hancock.svg" alt="CEO Signature" class="h-12 opacity-40">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Signature_of_John_Hancock.svg" alt="CEO Signature" class="h-8 md:h-12 opacity-40">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-32 bg-white">
+    <section id="contact" class="py-16 md:py-24 lg:py-32 bg-white relative">
         <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            <div class="text-center mb-20 reveal">
-                <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-4">The Nexus Advantage</h2>
-                <h3 class="text-4xl md:text-5xl font-heading font-bold text-brand-black">Engineered for the Enterprise</h3>
-                <div class="w-16 h-1 bg-brand-red mx-auto mt-6"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="p-10 border border-brand-border bg-brand-gray hover:border-brand-red hover:bg-white transition duration-400 group reveal">
-                    <div class="w-14 h-14 bg-white border border-brand-border flex items-center justify-center mb-8 group-hover:bg-brand-red transition duration-400 shadow-sm">
-                        <i class="fa-solid fa-network-wired text-xl text-brand-black group-hover:text-white transition"></i>
-                    </div>
-                    <h4 class="text-xl font-heading font-bold text-brand-black mb-4">Global Supplier Network</h4>
-                    <p class="text-xs text-brand-muted font-light leading-relaxed">Direct relationships with sovereign refineries, verified mines, and tier-1 agricultural producers, bypassing intermediaries to ensure an unbroken, cost-effective supply.</p>
-                </div>
-                <div class="p-10 border border-brand-border bg-brand-gray hover:border-brand-red hover:bg-white transition duration-400 group reveal">
-                    <div class="w-14 h-14 bg-white border border-brand-border flex items-center justify-center mb-8 group-hover:bg-brand-red transition duration-400 shadow-sm">
-                        <i class="fa-solid fa-bolt text-xl text-brand-black group-hover:text-white transition"></i>
-                    </div>
-                    <h4 class="text-xl font-heading font-bold text-brand-black mb-4">Rapid Execution Velocity</h4>
-                    <p class="text-xs text-brand-muted font-light leading-relaxed">Streamlined logistical frameworks, proprietary customs routing algorithms, and priority shipping lanes guarantee rapid mobilization of capital-intensive assets.</p>
-                </div>
-                <div class="p-10 border border-brand-border bg-brand-gray hover:border-brand-red hover:bg-white transition duration-400 group reveal">
-                    <div class="w-14 h-14 bg-white border border-brand-border flex items-center justify-center mb-8 group-hover:bg-brand-red transition duration-400 shadow-sm">
-                        <i class="fa-solid fa-handshake text-xl text-brand-black group-hover:text-white transition"></i>
-                    </div>
-                    <h4 class="text-xl font-heading font-bold text-brand-black mb-4">Absolute Transparency</h4>
-                    <p class="text-xs text-brand-muted font-light leading-relaxed">Zero hidden fees or opaque routing. Full digital documentation, independent SGS lab reports, and satellite tracking provided for every transactional milestone.</p>
-                </div>
-                <div class="p-10 border border-brand-border bg-brand-gray hover:border-brand-red hover:bg-white transition duration-400 group reveal">
-                    <div class="w-14 h-14 bg-white border border-brand-border flex items-center justify-center mb-8 group-hover:bg-brand-red transition duration-400 shadow-sm">
-                        <i class="fa-solid fa-vault text-xl text-brand-black group-hover:text-white transition"></i>
-                    </div>
-                    <h4 class="text-xl font-heading font-bold text-brand-black mb-4">Secure Transactions</h4>
-                    <p class="text-xs text-brand-muted font-light leading-relaxed">Institutional-grade financial protocols utilized exclusively. We partner directly with Top 50 global banks for LC, SBLC, MT103, and DLC instruments to secure all capital.</p>
-                </div>
-                <div class="p-10 border border-brand-border bg-brand-gray hover:border-brand-red hover:bg-white transition duration-400 group reveal">
-                    <div class="w-14 h-14 bg-white border border-brand-border flex items-center justify-center mb-8 group-hover:bg-brand-red transition duration-400 shadow-sm">
-                        <i class="fa-solid fa-chart-pie text-xl text-brand-black group-hover:text-white transition"></i>
-                    </div>
-                    <h4 class="text-xl font-heading font-bold text-brand-black mb-4">Trade Intelligence</h4>
-                    <p class="text-xs text-brand-muted font-light leading-relaxed">Our proprietary market analysis desk delivers predictive pricing models, geopolitical risk assessments, and arbitrage opportunities directly to our corporate partners.</p>
-                </div>
-                <div class="p-10 border border-brand-border bg-brand-gray hover:border-brand-red hover:bg-white transition duration-400 group reveal">
-                    <div class="w-14 h-14 bg-white border border-brand-border flex items-center justify-center mb-8 group-hover:bg-brand-red transition duration-400 shadow-sm">
-                        <i class="fa-solid fa-shield-halved text-xl text-brand-black group-hover:text-white transition"></i>
-                    </div>
-                    <h4 class="text-xl font-heading font-bold text-brand-black mb-4">Risk Mitigation</h4>
-                    <p class="text-xs text-brand-muted font-light leading-relaxed">Comprehensive hedging strategies shielding against market volatility. We provide premium maritime insurance wrapping up to 110% of total CIF value for total peace of mind.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-16 bg-brand-black text-white relative overflow-hidden border-t border-brand-red">
-        <div class="absolute -right-40 -top-40 w-96 h-96 bg-brand-red rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
-        <div class="max-w-[1400px] mx-auto px-4 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between">
-            <div class="w-full md:w-2/3 mb-8 md:mb-0 reveal-left">
-                <div class="inline-flex items-center space-x-2 border border-gray-700 bg-gray-900 px-3 py-1 mb-4">
-                    <span class="w-2 h-2 bg-brand-red rounded-full animate-pulse"></span>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-300">System Online 24/7</span>
-                </div>
-                <h3 class="text-3xl font-heading font-bold mb-4">NexusTrade™ AI Intelligence</h3>
-                <p class="text-sm text-gray-400 font-light max-w-2xl leading-relaxed">
-                    Deploy our proprietary institutional AI. Instantly pull real-time spot pricing, calculate complex CIF routing estimates, and verify global compliance documentation requirements without waiting for human intervention.
-                </p>
-            </div>
-            <div class="w-full md:w-1/3 flex md:justify-end reveal-right">
-                <button class="bg-white text-brand-black px-8 py-5 text-xs font-bold tracking-[0.2em] uppercase hover:bg-brand-red hover:text-white transition duration-300 shadow-premium flex items-center">
-                    <i class="fa-solid fa-robot mr-3 text-lg"></i> Launch Assistant
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <div class="fixed bottom-8 right-8 z-50 chat-btn">
-        <button class="w-16 h-16 bg-brand-black border border-brand-red text-white rounded-full shadow-red-glow flex items-center justify-center hover:bg-brand-red hover:scale-105 transition duration-300 cursor-pointer group relative">
-            <i class="fa-solid fa-headset text-xl group-hover:hidden"></i>
-            <i class="fa-solid fa-comment-dots text-xl hidden group-hover:block"></i>
-            <span class="absolute top-0 right-0 w-4 h-4 bg-green-500 border-2 border-brand-black rounded-full"></span>
-        </button>
-    </div>
-
-    <section class="py-24 bg-brand-gray border-y border-brand-border">
-        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Client Validation</h2>
-                <h3 class="text-4xl font-heading font-bold text-brand-black">Trusted by Global Industry Leaders</h3>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20 reveal">
-                <div class="bg-white p-10 border border-brand-border relative shadow-sm">
-                    <i class="fa-solid fa-quote-right absolute top-10 right-10 text-5xl text-brand-gray"></i>
-                    <div class="flex items-center mb-8 border-b border-brand-border pb-6">
-                        <div class="w-16 h-16 bg-brand-black text-white flex items-center justify-center font-heading font-bold text-2xl border-2 border-brand-red">V</div>
-                        <div class="ml-5">
-                            <h5 class="font-bold text-brand-black text-sm uppercase tracking-wider">VP of Procurement</h5>
-                            <p class="text-xs text-brand-muted mt-1">Valiant Energy Partners (EU)</p>
-                        </div>
-                    </div>
-                    <p class="text-brand-charcoal font-light italic text-sm leading-relaxed">
-                        "Nexus Global executed an incredibly complex 2M barrel Crude delivery under tight geopolitical constraints flawlessly. Their compliance framework, risk hedging, and logistical transparency are simply unmatched in the contemporary trading sector."
-                    </p>
-                </div>
-                
-                <div class="bg-white p-10 border border-brand-border relative shadow-sm">
-                    <i class="fa-solid fa-quote-right absolute top-10 right-10 text-5xl text-brand-gray"></i>
-                    <div class="flex items-center mb-8 border-b border-brand-border pb-6">
-                        <div class="w-16 h-16 bg-brand-black text-white flex items-center justify-center font-heading font-bold text-2xl border-2 border-brand-red">A</div>
-                        <div class="ml-5">
-                            <h5 class="font-bold text-brand-black text-sm uppercase tracking-wider">Chief Supply Officer</h5>
-                            <p class="text-xs text-brand-muted mt-1">Apex Industrial Metals Group (APAC)</p>
-                        </div>
-                    </div>
-                    <p class="text-brand-charcoal font-light italic text-sm leading-relaxed">
-                        "From securing LME registered copper cathodes at competitive spot prices to managing the entire maritime insurance wrap, the Nexus team operates with a level of precision and integrity that Fortune 500 manufacturing requires."
-                    </p>
-                </div>
-            </div>
-
-            <div class="border-t border-brand-border pt-12">
-                <p class="text-center text-[10px] uppercase tracking-[0.2em] text-brand-muted font-bold mb-8">Integrated Ecosystem Partners</p>
-                <div class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition duration-500">
-                    <div class="text-xl font-heading font-bold text-brand-black flex items-center"><i class="fa-brands fa-ship text-2xl mr-3 text-brand-red"></i> Maersk Line</div>
-                    <div class="text-xl font-heading font-bold text-brand-black flex items-center"><i class="fa-solid fa-building-columns text-2xl mr-3 text-brand-red"></i> JP Morgan Trade</div>
-                    <div class="text-xl font-heading font-bold text-brand-black flex items-center"><i class="fa-solid fa-check-double text-2xl mr-3 text-brand-red"></i> SGS Verified</div>
-                    <div class="text-xl font-heading font-bold text-brand-black flex items-center"><i class="fa-solid fa-scale-balanced text-2xl mr-3 text-brand-red"></i> ICC Compliant</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-32 bg-white relative">
-        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            <div class="flex flex-col lg:flex-row gap-16">
+            <div class="flex flex-col lg:flex-row gap-10 lg:gap-16">
                 
                 <div class="w-full lg:w-5/12 reveal-left">
-                    <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Initiate Dialogue</h2>
-                    <h3 class="text-4xl font-heading font-bold text-brand-black mb-8">Direct Global Trading Desk</h3>
-                    <p class="text-brand-muted font-light mb-12 leading-relaxed text-sm">
-                        Connect immediately with our senior commodity directors to discuss volume allocations, exact spot pricing, LC/SBLC requirements, and bespoke logistical routing tailored to your enterprise.
+                    <h2 class="text-brand-red text-[10px] font-bold tracking-[0.2em] uppercase mb-2 md:mb-4">Initiate Dialogue</h2>
+                    <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-black mb-6 md:mb-8">Direct Trading Desk</h3>
+                    <p class="text-brand-muted font-light mb-8 md:mb-12 leading-relaxed text-xs md:text-sm">
+                        Connect immediately with our senior commodity directors to discuss volume allocations, exact spot pricing, LC/SBLC requirements, and bespoke logistical routing.
                     </p>
 
-                    <div class="space-y-8">
-                        <div class="flex items-start p-6 bg-brand-gray border border-brand-border hover:border-brand-red transition">
-                            <i class="fa-brands fa-whatsapp text-3xl text-brand-red mr-6"></i>
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="flex items-start p-4 md:p-6 bg-brand-gray border border-brand-border hover:border-brand-red transition">
+                            <i class="fa-brands fa-whatsapp text-2xl md:text-3xl text-brand-red mr-4 md:mr-6"></i>
                             <div>
-                                <h5 class="font-bold text-brand-black text-sm uppercase tracking-wider mb-2">Secure Priority WhatsApp</h5>
-                                <p class="text-brand-charcoal text-sm font-light">+1 (800) 999-TRADE <span class="block text-[10px] text-gray-500 mt-1 uppercase">For verified corporate buyers only</span></p>
+                                <h5 class="font-bold text-brand-black text-xs md:text-sm uppercase tracking-wider mb-1 md:mb-2">Priority WhatsApp</h5>
+                                <p class="text-brand-charcoal text-xs md:text-sm font-light">+1 (800) 999-TRADE</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-start p-6 bg-brand-gray border border-brand-border hover:border-brand-red transition">
-                            <i class="fa-solid fa-envelope text-3xl text-brand-red mr-6"></i>
+                        <div class="flex items-start p-4 md:p-6 bg-brand-gray border border-brand-border hover:border-brand-red transition">
+                            <i class="fa-solid fa-envelope text-2xl md:text-3xl text-brand-red mr-4 md:mr-6"></i>
                             <div>
-                                <h5 class="font-bold text-brand-black text-sm uppercase tracking-wider mb-2">Official Communications</h5>
-                                <p class="text-brand-charcoal text-sm font-light">desk@nexusglobal.com <span class="block text-[10px] text-gray-500 mt-1 uppercase">SLA Response: Under 2 Hours</span></p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start p-6 bg-brand-gray border border-brand-border hover:border-brand-red transition">
-                            <i class="fa-solid fa-building text-3xl text-brand-red mr-6"></i>
-                            <div>
-                                <h5 class="font-bold text-brand-black text-sm uppercase tracking-wider mb-2">Global Headquarters</h5>
-                                <p class="text-brand-charcoal text-sm font-light leading-relaxed">Level 45, The World Trade Center<br>New York, NY 10007, USA</p>
+                                <h5 class="font-bold text-brand-black text-xs md:text-sm uppercase tracking-wider mb-1 md:mb-2">Official Communications</h5>
+                                <p class="text-brand-charcoal text-xs md:text-sm font-light">desk@nexusglobal.com</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="w-full lg:w-7/12 reveal-right">
-                    <div class="bg-white border border-brand-border p-10 md:p-14 shadow-premium relative">
-                        <div class="absolute top-0 left-0 w-full h-1.5 bg-brand-red"></div>
+                    <div class="bg-white border border-brand-border p-6 md:p-10 lg:p-14 shadow-premium relative">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-brand-red"></div>
                         
-                        <h4 class="text-2xl font-heading font-bold text-brand-black mb-2">Submit Corporate Inquiry / RFQ</h4>
-                        <p class="text-xs text-brand-muted mb-8 font-light">All data submitted is protected under strict, pre-existing NDAs and encryption.</p>
+                        <h4 class="text-xl md:text-2xl font-heading font-bold text-brand-black mb-2">Submit Corporate Inquiry</h4>
+                        <p class="text-[10px] md:text-xs text-brand-muted mb-6 md:mb-8 font-light">All data submitted is protected under strict, pre-existing NDAs.</p>
                         
-                        <form class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <form class="space-y-4 md:space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                                 <div>
-                                    <label class="block text-[10px] font-bold text-brand-black uppercase tracking-widest mb-2">Authorized Buyer Name <span class="text-brand-red">*</span></label>
-                                    <input type="text" class="w-full bg-brand-gray border border-brand-border px-4 py-3.5 text-sm focus:outline-none focus:border-brand-red focus:bg-white transition" required>
+                                    <label class="block text-[8px] md:text-[10px] font-bold text-brand-black uppercase tracking-widest mb-1 md:mb-2">Buyer Name <span class="text-brand-red">*</span></label>
+                                    <input type="text" class="w-full bg-brand-gray border border-brand-border px-3 py-3 md:px-4 md:py-3.5 text-xs md:text-sm focus:outline-none focus:border-brand-red focus:bg-white transition" required>
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] font-bold text-brand-black uppercase tracking-widest mb-2">Corporate Email <span class="text-brand-red">*</span></label>
-                                    <input type="email" class="w-full bg-brand-gray border border-brand-border px-4 py-3.5 text-sm focus:outline-none focus:border-brand-red focus:bg-white transition" required>
+                                    <label class="block text-[8px] md:text-[10px] font-bold text-brand-black uppercase tracking-widest mb-1 md:mb-2">Corporate Email <span class="text-brand-red">*</span></label>
+                                    <input type="email" class="w-full bg-brand-gray border border-brand-border px-3 py-3 md:px-4 md:py-3.5 text-xs md:text-sm focus:outline-none focus:border-brand-red focus:bg-white transition" required>
                                 </div>
                             </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-[10px] font-bold text-brand-black uppercase tracking-widest mb-2">Company Legal Name <span class="text-brand-red">*</span></label>
-                                    <input type="text" class="w-full bg-brand-gray border border-brand-border px-4 py-3.5 text-sm focus:outline-none focus:border-brand-red focus:bg-white transition" required>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-brand-black uppercase tracking-widest mb-2">Target Asset / Commodity <span class="text-brand-red">*</span></label>
-                                    <div class="relative">
-                                        <select class="w-full bg-brand-gray border border-brand-border px-4 py-3.5 text-sm text-brand-charcoal focus:outline-none focus:border-brand-red focus:bg-white transition appearance-none cursor-pointer" required>
-                                            <option value="" disabled selected>Select Primary Category...</option>
-                                            <option>Crude Oil / Refined Petroleum</option>
-                                            <option>LNG / LPG</option>
-                                            <option>Metals / Minerals</option>
-                                            <option>Agri / Bulk Food</option>
-                                        </select>
-                                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
-                                    </div>
-                                </div>
-                            </div>
-
+                            
                             <div>
-                                <label class="block text-[10px] font-bold text-brand-black uppercase tracking-widest mb-2">Logistics & Volume Specifications</label>
-                                <textarea rows="4" class="w-full bg-brand-gray border border-brand-border px-4 py-3.5 text-sm focus:outline-none focus:border-brand-red focus:bg-white transition resize-none" placeholder="Please specify required MT/Barrels, delivery terms (CIF/FOB), target destination port, and LC issuance capability..."></textarea>
+                                <label class="block text-[8px] md:text-[10px] font-bold text-brand-black uppercase tracking-widest mb-1 md:mb-2">Logistics & Volume <span class="text-brand-red">*</span></label>
+                                <textarea rows="3" class="w-full bg-brand-gray border border-brand-border px-3 py-3 md:px-4 md:py-3.5 text-xs md:text-sm focus:outline-none focus:border-brand-red focus:bg-white transition resize-none" placeholder="Specify MT/Barrels, CIF/FOB..."></textarea>
                             </div>
 
-                            <div class="flex items-start mb-6">
-                                <div class="flex items-center h-5">
-                                    <input type="checkbox" class="w-4 h-4 border border-brand-border rounded-none bg-brand-gray focus:ring-0 focus:ring-offset-0 cursor-pointer" required>
-                                </div>
-                                <div class="ml-3 text-[10px] text-brand-muted uppercase tracking-wider leading-relaxed">
-                                    <label>I confirm that I am an authorized corporate signatory and agree to the <a href="#" class="text-brand-red hover:underline">Terms of Trade</a> and <a href="#" class="text-brand-red hover:underline">Privacy Policy</a>.</label>
-                                </div>
-                            </div>
-
-                            <button type="button" class="w-full bg-brand-black text-white px-8 py-5 text-xs font-bold tracking-[0.2em] uppercase hover:bg-brand-red transition duration-300">
-                                Submit Official RFQ to Trade Desk
+                            <button type="button" class="w-full bg-brand-black text-white px-6 py-4 md:px-8 md:py-5 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase hover:bg-brand-red transition duration-300">
+                                Submit RFQ to Trade Desk
                             </button>
                         </form>
                     </div>
@@ -860,86 +602,12 @@
         </div>
     </section>
 
-    <section class="py-16 bg-brand-red text-white border-y border-brand-darkRed">
+    <footer class="bg-brand-black text-white pt-16 md:pt-24 pb-8">
         <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-10">
-                <div class="w-full lg:w-1/2">
-                    <h3 class="text-3xl font-heading font-bold mb-3">Institutional Market Intelligence</h3>
-                    <p class="text-sm font-light text-white/90 leading-relaxed border-l-2 border-white pl-4">
-                        Subscribe to our exclusive distribution list to receive daily spot price matrices, weekly macro-economic shipping forecasts, and critical geopolitical risk alerts.
-                    </p>
-                </div>
-                <div class="w-full lg:w-1/2">
-                    <form class="flex flex-col sm:flex-row gap-0 shadow-2xl">
-                        <input type="email" placeholder="Enter Corporate Email Address" class="w-full bg-white/10 border border-white/20 text-white placeholder-white/60 px-6 py-5 text-sm focus:outline-none focus:bg-white/20 transition backdrop-blur-sm">
-                        <button type="button" class="bg-brand-black text-white px-10 py-5 text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-brand-black transition duration-300 whitespace-nowrap">
-                            Subscribe Now
-                        </button>
-                    </form>
-                    <p class="text-[10px] text-white/60 mt-3 uppercase tracking-widest text-center sm:text-left"><i class="fa-solid fa-shield-halved mr-1"></i> No Spam. Strict Corporate Privacy.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-brand-black text-white pt-24 pb-8">
-        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 border-b border-gray-800 pb-16 mb-8">
-                
-                <div class="lg:col-span-2 pr-0 lg:pr-12">
-                    <a href="#" class="text-3xl font-heading font-extrabold tracking-widest text-white block mb-6">
-                        NEXUS<span class="text-brand-red">.</span>GLOBAL
-                    </a>
-                    <p class="text-sm text-gray-400 font-light mb-8 leading-relaxed">
-                        The definitive architectural standard in global enterprise commodity trading, logistics, and trade finance. Forging unbreakable supply chains for the modern industrial era.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-brand-red hover:bg-brand-red transition duration-300"><i class="fa-brands fa-linkedin-in text-sm"></i></a>
-                        <a href="#" class="w-10 h-10 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-brand-red hover:bg-brand-red transition duration-300"><i class="fa-brands fa-x-twitter text-sm"></i></a>
-                        <a href="#" class="w-10 h-10 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-brand-red hover:bg-brand-red transition duration-300"><i class="fa-solid fa-building-columns text-sm"></i></a>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-white mb-6 border-l-2 border-brand-red pl-3">Sitemap</h4>
-                    <ul class="space-y-4 text-xs text-gray-400 font-light tracking-wide">
-                        <li><a href="#about" class="hover:text-brand-red transition flex items-center"><span class="w-2 h-px bg-brand-red mr-2 opacity-0 hover:opacity-100 transition"></span> Corporate Overview</a></li>
-                        <li><a href="#commodities" class="hover:text-brand-red transition flex items-center"><span class="w-2 h-px bg-brand-red mr-2 opacity-0 hover:opacity-100 transition"></span> Asset Catalog</a></li>
-                        <li><a href="#network" class="hover:text-brand-red transition flex items-center"><span class="w-2 h-px bg-brand-red mr-2 opacity-0 hover:opacity-100 transition"></span> Global Footprint</a></li>
-                        <li><a href="#certifications" class="hover:text-brand-red transition flex items-center"><span class="w-2 h-px bg-brand-red mr-2 opacity-0 hover:opacity-100 transition"></span> Compliance Metrics</a></li>
-                        <li><a href="#contact" class="hover:text-brand-red transition flex items-center"><span class="w-2 h-px bg-brand-red mr-2 opacity-0 hover:opacity-100 transition"></span> Trading Desk Connect</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-white mb-6 border-l-2 border-brand-red pl-3">Capabilities</h4>
-                    <ul class="space-y-4 text-xs text-gray-400 font-light tracking-wide">
-                        <li><a href="#" class="hover:text-brand-red transition">Bulk Carrier Logistics</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition">Commodity Hedging</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition">SBLC / LC Financing</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition">Customs Clearing</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition">Independent Assaying</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-white mb-6 border-l-2 border-brand-red pl-3">Legal & Security</h4>
-                    <ul class="space-y-4 text-xs text-gray-400 font-light tracking-wide">
-                        <li><a href="#" class="hover:text-brand-red transition">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition">Terms of Trade (CIF/FOB)</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition">KYC / AML Corporate Framework</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition">Global Sanctions Compliance</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition">Environmental Policies (ESG)</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-widest text-gray-500 pt-4">
-                <p>&copy; <span id="year"></span> Nexus Global Trading Corporation. All Rights Reserved Worldwide.</p>
-                <div class="mt-6 md:mt-0 flex space-x-8">
-                    <span class="flex items-center"><i class="fa-solid fa-lock text-brand-red mr-2"></i> 256-Bit SSL Encrypted</span>
-                    <span class="flex items-center hidden sm:flex"><i class="fa-solid fa-globe text-brand-red mr-2"></i> DUNS: 82-456-9912</span>
+            <div class="flex flex-col md:flex-row justify-between items-center text-[8px] md:text-[10px] uppercase tracking-widest text-gray-500 pt-4 border-t border-gray-800">
+                <p class="mb-4 md:mb-0 text-center md:text-left">&copy; <span id="year"></span> Nexus Global Trading Corporation. All Rights Reserved.</p>
+                <div class="flex space-x-4 md:space-x-8">
+                    <span class="flex items-center"><i class="fa-solid fa-lock text-brand-red mr-1.5"></i> SSL Encrypted</span>
                 </div>
             </div>
         </div>
@@ -947,11 +615,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // 1. Dynamic Year for Footer
             document.getElementById('year').textContent = new Date().getFullYear();
 
-            // 2. Mobile Menu Toggle Logic
+            // Mobile Menu Toggle Logic
             const mobileBtn = document.getElementById('mobileMenuBtn');
             const mobileMenu = document.getElementById('mobileMenu');
             
@@ -959,7 +625,6 @@
                 mobileMenu.classList.toggle('hidden');
             });
 
-            // Close mobile menu when a link is clicked
             const mobileLinks = mobileMenu.querySelectorAll('a');
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
@@ -967,59 +632,32 @@
                 });
             });
 
-            // 3. Navbar Glassmorphism / Scroll State Logic
+            // Navbar Glassmorphism Scroll State
             const nav = document.getElementById('mainNav');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 40) {
                     nav.classList.add('shadow-md');
-                    nav.style.background = 'rgba(255, 255, 255, 0.98)';
+                    // Ensure solid background on mobile scroll to prevent unreadable text over images
+                    nav.style.background = window.innerWidth < 1024 ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.95)';
                 } else {
                     nav.classList.remove('shadow-md');
-                    nav.style.background = 'rgba(255, 255, 255, 0.85)';
+                    nav.style.background = window.innerWidth < 1024 ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.85)';
                 }
             });
 
-            // 4. Scroll Reveal Intersections (Intersection Observer API)
-            const revealOptions = {
-                threshold: 0.15,
-                rootMargin: "0px 0px -50px 0px"
-            };
-
+            // Scroll Reveal Intersections
+            const revealOptions = { threshold: 0.1, rootMargin: "0px 0px -20px 0px" };
             const revealObserver = new IntersectionObserver(function(entries, observer) {
                 entries.forEach(entry => {
-                    if (!entry.isIntersecting) {
-                        return;
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); 
                     }
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target); // Stop observing once revealed
                 });
             }, revealOptions);
 
-            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-            revealElements.forEach(el => {
+            document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
                 revealObserver.observe(el);
-            });
-
-            // 5. Smooth Scrolling for Anchor Links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    const targetId = this.getAttribute('href');
-                    if(targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if(targetElement) {
-                        e.preventDefault();
-                        // Offset for sticky header (Top Bar + Main Nav)
-                        const offset = 120; 
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - offset;
-        
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: "smooth"
-                        });
-                    }
-                });
             });
         });
     </script>
